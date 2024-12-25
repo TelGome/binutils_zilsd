@@ -1437,8 +1437,8 @@ static struct riscv_supported_ext riscv_supported_std_z_ext[] =
   {"zcf",		ISA_SPEC_CLASS_DRAFT,		1, 0,  0 },
   {"zcd",		ISA_SPEC_CLASS_DRAFT,		1, 0,  0 },
   {"zcmp",		ISA_SPEC_CLASS_DRAFT,		1, 0,  0 },
-  {"zilsd",		ISA_SPEC_CLASS_DRAFT,   	1, 0, 0 },
-  {"zclsd",		ISA_SPEC_CLASS_DRAFT,  		1, 0, 0 },
+  {"zilsd",		ISA_SPEC_CLASS_DRAFT,   	0, 1, 0 },
+  {"zclsd",		ISA_SPEC_CLASS_DRAFT,  		0, 1, 0 },
   {NULL, 0, 0, 0, 0}
 };
 
