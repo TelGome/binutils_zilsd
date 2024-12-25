@@ -1288,6 +1288,7 @@ static struct riscv_implicit_subset riscv_implicit_subsets[] =
   {"b", "zbs",		check_implicit_always},
   {"a", "zaamo",	check_implicit_always},
   {"a", "zalrsc",	check_implicit_always},
+  {"zilsd", "zicsr",	check_implicit_always},
   {"zclsd", "zilsd",	check_implicit_always},
   {"zclsd", "zca",	check_implicit_always},
   {"xsfvcp", "zve32x",  check_implicit_always},
@@ -1436,8 +1437,8 @@ static struct riscv_supported_ext riscv_supported_std_z_ext[] =
   {"zcf",		ISA_SPEC_CLASS_DRAFT,		1, 0,  0 },
   {"zcd",		ISA_SPEC_CLASS_DRAFT,		1, 0,  0 },
   {"zcmp",		ISA_SPEC_CLASS_DRAFT,		1, 0,  0 },
-  {"zilsd",       ISA_SPEC_CLASS_DRAFT,   	0, 1, 0 },
-  {"zclsd",   		ISA_SPEC_CLASS_DRAFT,  		0, 1, 0 },
+  {"zilsd",		ISA_SPEC_CLASS_DRAFT,   	1, 0, 0 },
+  {"zclsd",		ISA_SPEC_CLASS_DRAFT,  		1, 0, 0 },
   {NULL, 0, 0, 0, 0}
 };
 
@@ -2116,13 +2117,6 @@ riscv_parse_check_conflicts (riscv_parse_subset_t *rps)
 	(_("`zclsd' is conflict with the `c+f'/ `zcf' extension"));
       no_conflict = false;
     }
-  if (riscv_lookup_subset (rps->subset_list, "zilsd", &subset)
-      && xlen > 32)
-    {
-      rps->error_handler
-	(_("rv%d does not support the `zilsd' extension"), xlen);
-      no_conflict = false;
-    }
   if (riscv_lookup_subset (rps->subset_list, "zclsd", &subset)
       && xlen > 32)
     {
@@ -2130,13 +2124,12 @@ riscv_parse_check_conflicts (riscv_parse_subset_t *rps)
 	(_("rv%d does not support the `zclsd' extension"), xlen);
       no_conflict = false;
     }
-  if (riscv_lookup_subset (rps->subset_list, "zclsd", &subset)
-      && ((riscv_lookup_subset (rps->subset_list, "c", &subset)
-	    && riscv_lookup_subset (rps->subset_list, "f", &subset))
-	    || riscv_lookup_subset (rps->subset_list, "zcf", &subset)))
+  //Add zilsd conflicts
+  if (riscv_lookup_subset (rps->subset_list, "zilsd", &subset)
+      && xlen > 32)
     {
       rps->error_handler
-	(_("`zclsd' is conflict with the `c+f'/ `zcf' extension"));
+	(_("rv%d does not support the `zilsd' extension"), xlen);
       no_conflict = false;
     }
   if (riscv_lookup_subset (rps->subset_list, "xtheadvector", &subset)
